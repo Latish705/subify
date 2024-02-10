@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import AppwriteService from '../appwrite/service';
 
-const SignupForm = ({route}) => {
+const SignupForm = ({navigation, route}) => {
   const {client} = route.params;
 
   console.log('route: ', route);
@@ -22,6 +22,7 @@ const SignupForm = ({route}) => {
     try {
       const response = await client.createAccount({email, password, username});
       console.log(response);
+      navigation.navigate('Home');
     } catch (error) {
       console.log('error sending the request', error);
     }

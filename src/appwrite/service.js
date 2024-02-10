@@ -23,7 +23,7 @@ class AppwriteService {
 
   async createAccount({email, password, username}) {
     try {
-      console.log("going into network",email, password, username)
+      console.log('going into network', email, password, username);
       const userAccount = await this.account.create(
         ID.unique(),
         email,

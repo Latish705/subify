@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
 
-const LoginForm = ({route}) => {
+const LoginForm = ({route, navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const client = route.params?.client;
@@ -10,7 +10,7 @@ const LoginForm = ({route}) => {
     //onLogin(email, password);
     const response = await client.login({email, password});
     console.log(response);
-
+    navigation.navigate('Home');
     console.log('clicked');
   };
 
