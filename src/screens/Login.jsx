@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {View, TextInput, Button, StyleSheet} from 'react-native';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -30,10 +30,7 @@ const LoginForm = () => {
         value={password}
         secureTextEntry
       />
-      <Button
-        title="Login"
-        onPress={handleLogin}
-      />
+      <Button title="Login" onPress={handleLogin} />
     </View>
   );
 };
@@ -51,9 +48,8 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     marginVertical: 10,
     paddingHorizontal: 10,
-    color: 'black'
+    color: 'black',
   },
 });
 
 export default LoginForm;
-
