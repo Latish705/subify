@@ -76,9 +76,14 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: 'black',
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 8,
   },
   buttonText:{
-    color: 'white'
+    color: 'white',
+    fontWeight: 'bold',
+    letterSpacing: 0.7
   }
 });
 
