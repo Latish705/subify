@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput,Text,TouchableOpacity, StyleSheet } from 'react-native';
 
 const SignupForm = () => {
   const [username, setUsername] = useState('');
@@ -30,7 +30,7 @@ const SignupForm = () => {
         secureTextEntry
       />
       <TextInput
-        style={styles.input}
+        style={styles.input}  
         placeholder="Email"
         placeholderTextColor="gray"
         onChangeText={setEmail}
@@ -38,10 +38,12 @@ const SignupForm = () => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <Button
-        title="Sign up"
+      <TouchableOpacity
+        style={styles.button}
         onPress={handleSignup}
-      />
+      >
+        <Text style={styles.buttonText}>Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -55,12 +57,19 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     height: 40,
-    borderWidth: 1,
+    borderWidth: 0,
+    borderBottomWidth:1,
     borderColor: 'gray',
     marginVertical: 10,
     paddingHorizontal: 10,
     color: 'black',
   },
+  button: {
+    backgroundColor: 'black',
+  },
+  buttonText:{
+    color: 'white'
+  }
 });
 
 export default SignupForm;
