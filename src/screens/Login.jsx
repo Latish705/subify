@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
 
-const LoginForm = ({route}) => {
+const LoginForm = ({route, navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const client = route.params?.client;
@@ -12,6 +12,7 @@ const LoginForm = ({route}) => {
     console.log(response);
 
     console.log('clicked');
+    navigation.navigate('Dasboard', { username: "example user" })
   };
 
   return (
