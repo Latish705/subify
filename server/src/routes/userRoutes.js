@@ -5,6 +5,8 @@ import {
   getUserTimeSpentInSimilarCategoryPlatforms,
   addPlatformTime,
   enrolledPlatforms,
+  addinterestedPlatforms,
+  getUserInterestedPlatforms
 } from '../controllers/userController.js';
 
 const userRouter = Router();
@@ -17,4 +19,7 @@ userRouter.post(
 );
 userRouter.post('/addPlatformTimeSpent', addPlatformTime);
 userRouter.post('/enrollePlatform', enrolledPlatforms);
+userRouter.post('/addIntrestedplatform', addinterestedPlatforms);
+userRouter.get('/userIntrestedplatform', getUserInterestedPlatforms);
+
 export default userRouter;

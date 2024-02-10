@@ -1,5 +1,6 @@
 import {User} from '../models/userModel.js';
 import {Platform} from '../models/platformModel.js';
+import mongoose from 'mongoose';
 export const register = async (req, res) => {
   try {
     const {email, password, username} = req.body;
@@ -106,7 +107,7 @@ export const login = async (req, res) => {
 //     res.status(500).json({message: 'Internal server error'});
 //   }
 // };
-
+/*
 const categories = ['Entertainment', 'Music'];
 
 export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
@@ -147,6 +148,47 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
     return res.status(500).json({error: 'Internal server error'});
   }
 };
+*/
+
+export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
+  try {
+    const { userId, categories } = req.body;
+    const user = await User.findById(userId).populate('enrolledPlatforms.platform');
+    
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // If no categories are provided, default to all categories
+    const filterCategories = categories || ['Entertainment', 'Music'];
+
+    const enrolledPlatforms = user.enrolledPlatforms.filter(({ platform }) =>
+      filterCategories.includes(platform.category)
+    );
+
+    console.log('Filtered Platforms:', enrolledPlatforms);
+
+    const categoryMap = {};
+
+    for (const platform of enrolledPlatforms) {
+      const { category, timeSpent } = platform;
+      if (!categoryMap[category]) {
+        categoryMap[category] = timeSpent;
+      } else {
+        categoryMap[category] += timeSpent;
+      }
+    }
+
+    console.log('Category Map:', categoryMap);
+
+    return res.status(200).json({ totalTimeSpent: categoryMap });
+  } catch (error) {
+    console.error('Error in getUserTimeSpentInSimilarCategoryPlatforms:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 export const addPlatformTime = async (req, res) => {
   try {
@@ -196,5 +238,44 @@ export const enrolledPlatforms = async (req, res) => {
     return res.status(200).json({message: 'Enrolled', success: true});
   } catch (error) {
     console.log('Error enrolling in platform: ', error);
+  }
+};
+
+export const addinterestedPlatforms = async (req, res) => {
+  const { userId, platformId } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    // Convert platformId to ObjectId
+    const platformObjectId = platformId;
+    user.interestedPlatforms.push(platformObjectId);
+    await user.save({ validateBeforeSave: false });
+    return res.status(200).json({ message: "Interested", success: true });
+  } catch (error) {
+    console.log('Error in interested in platform: ', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const getUserInterestedPlatforms = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    // Find the user by userId and populate the interestedPlatforms field
+    const user = await User.findById(userId).populate('interestedPlatforms');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Extract interested platforms from the user object
+    const interestedPlatforms = user.interestedPlatforms;
+
+    return res.status(200).json({ interestedPlatforms });
+  } catch (error) {
+    console.error('Error in getUserInterestedPlatforms:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
