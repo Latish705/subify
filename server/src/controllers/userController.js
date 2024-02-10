@@ -279,3 +279,47 @@ export const getUserInterestedPlatforms = async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+export const percentageTimeSpentByCategory = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find the user by ID
+    const user = await User.findById(userId).populate('enrolledPlatforms.platform');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Initialize an object to store the total time spent on each category
+    const totalTimeByCategory = {
+      'Movie streaming': 0,
+      'Music streaming': 0,
+      'Education': 0,
+      'Dating': 0,
+      'Productivity': 0,
+    };
+
+    // Calculate the total time spent on each category
+    user.enrolledPlatforms.forEach(platform => {
+      const category = platform.platform.category;
+      totalTimeByCategory[category] += platform.timeSpent;
+    });
+
+    // Calculate the total time spent by the user
+    const totalTimeSpent = Object.values(totalTimeByCategory).reduce((total, time) => total + time, 0);
+
+    // Calculate the percentage of time spent on each category
+    const percentageByCategory = {};
+    for (const category in totalTimeByCategory) {
+      percentageByCategory[category] = (totalTimeByCategory[category] / totalTimeSpent) * 100;
+    }
+
+    // Return the result
+    res.json({ percentageByCategory });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
