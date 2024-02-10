@@ -119,7 +119,7 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
     const categorySet = new Set(); // Set to store categories of interested platforms
     interestedPlatforms.forEach(platform => categorySet.add(platform.category));
 
-    let totalTimeSpent = 0;
+    let totalTimeSpent = [];
 
     for (const category of categorySet) {
       // Find platforms in the same category and sum up their timeSpent
@@ -130,7 +130,7 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
         (acc, curr) => acc + curr.timeSpent,
         0,
       );
-      totalTimeSpent += timeSpentInCategory;
+      totalTimeSpent.push(timeSpentInCategory);
     }
 
     return totalTimeSpent;
