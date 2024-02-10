@@ -9,6 +9,7 @@ import {
 import AppwriteService from '../appwrite/service';
 
 const SignupForm = ({navigation, route}) => {
+const SignupForm = ({route, navigation}) => {
   const {client} = route.params;
 
   console.log('route: ', route);
@@ -23,6 +24,7 @@ const SignupForm = ({navigation, route}) => {
       const response = await client.createAccount({email, password, username});
       console.log(response);
       navigation.navigate('Home');
+      navigation.navigate('Dasboard', { username: "example user" })
     } catch (error) {
       console.log('error sending the request', error);
     }

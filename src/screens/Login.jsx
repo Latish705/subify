@@ -12,6 +12,7 @@ const LoginForm = ({route, navigation}) => {
     console.log(response);
     navigation.navigate('Home');
     console.log('clicked');
+    navigation.navigate('Dasboard', { username: "example user" })
   };
 
   return (
