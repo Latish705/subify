@@ -10,9 +10,9 @@ const LoginForm = ({route, navigation}) => {
     //onLogin(email, password);
     const response = await client.login({email, password});
     console.log(response);
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
     console.log('clicked');
-    navigation.navigate('Dasboard', { username: "example user" })
+    navigation.navigate('Dasboard', {username: 'example user'});
   };
 
   return (
