@@ -6,21 +6,18 @@ import Insight from './Insight';
 const Stack = createNativeStackNavigator();
 
 export default function Dashboard() {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator
-                initialRouteName="Insight"
-                screenOptions={{
-                  headerStyle: {
-                    backgroundColor: 'black',
-                  },
-                  headerTintColor: 'white',
-            }}>
-                <Stack.Screen
-                    name='Insight'
-                    component={Insight}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Insight"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTintColor: 'white',
+        }}>
+        <Stack.Screen name="Insight" component={Insight} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
