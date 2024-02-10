@@ -152,14 +152,15 @@ export const addPlatformTime = async (req, res) => {
     if (!user) {
       return res.status(404).json({message: 'User not found'});
     }
-    const platform = user.enrolledPlatforms.some(platform => {
-      console.log(platform.platform, platformId);
-      platform.platform === platformId;
-    });
+    const platform = user.enrolledPlatforms.find(
+      platform => platform.platform.toString() === platformId,
+    );
+
     if (!platform) {
       return res.status(404).json({message: 'Platform not found'});
     }
-    platform.timeSpent += timeSpent; // Update the timeSpent for the platform
+    platform.timeSpent += timeSpent;
+    user.markModified('enrolledPlatforms');
     await user.save();
 
     return res.status(200).json({message: 'Time added', success: true});
