@@ -8,8 +8,8 @@ const LoginForm = ({route, navigation}) => {
   const handleLogin = async () => {
     // Call the onLogin function passed from the parent component
     //onLogin(email, password);
-    const response = await client.login({email, password});
-    console.log(response);
+    // const response = await client.login({email, password});
+    // console.log(response);r
     // navigation.navigate('Home');
     console.log('clicked');
     navigation.navigate('Dasboard', {username: 'example user'});
