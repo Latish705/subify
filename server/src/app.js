@@ -11,4 +11,9 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
+//user routes
+app.use('/api/users', userRoutes);
+//platform routes
+app.use('/api/platforms', platformRoutes);
+
 export default app;
