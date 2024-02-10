@@ -11,8 +11,13 @@ export const addPlatform = async (req, res) => {
         .status(400)
         .json({message: 'Platform already exists', success: false});
     }
-    const newPlatform = new Platform({category, name, plans, logoImage: logo});
-    await newPlatform.save();
+    const newPlatform = Platform.create({
+      category,
+      name,
+      plans,
+      logoImage: logo,
+    });
+
     res.status(201).json({
       message: 'Platform created',
       platform: newPlatform,
