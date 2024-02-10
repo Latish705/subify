@@ -44,7 +44,7 @@ export const login = async (req, res) => {
 
     return res
       .status(200)
-      .json({message: 'Successfully login',userId:user._id ,user, success: true});
+      .json({message: 'Successfully login', user, success: true});
   } catch (error) {
     console.log('Error logging in: ', error);
   }
@@ -152,5 +152,18 @@ export const addPlatfromTime = async (req, res) => {
     if (!user) {
       return res.status(404).json({message: 'User not found'});
     }
-  } catch (error) {}
+    const platform = user.enrolledPlatforms.find(
+      platform => platform.platform.toString() === platformId,
+    );
+    if (!platform) {
+      return res.status(404).json({message: 'Platform not found'});
+    }
+    user.enrolledPlatforms += timeSpent;
+    await user.save();
+
+    return res.status(200).json({message: 'Time added', success: true});
+  } catch (error) {
+    console.error('Error in addPlatfromTime:', error);
+    return res.status(500).json({message: 'Internal server error'});
+  }
 };

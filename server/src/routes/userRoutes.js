@@ -3,6 +3,7 @@ import {
   login,
   register,
   getUserTimeSpentInSimilarCategoryPlatforms,
+  addPlatfromTime,
 } from '../controllers/userController.js';
 
 const userRouter = Router();
@@ -13,5 +14,5 @@ userRouter.post(
   '/getUserTimeSpent',
   getUserTimeSpentInSimilarCategoryPlatforms,
 );
-
+userRouter.post('/addPlatformTimeSpent', addPlatfromTime);
 export default userRouter;
