@@ -19,8 +19,9 @@ const LoginForm = ({navigation}) => {
         { email: email, password: password }
       );
 
-      console.log(response.data)
-      if (response.data.success) navigation.navigate('Insight', {user: response.data.user})
+      console.log(response.data.user._id)
+
+      if (response.data.success) navigation.navigate('Insight', { userId: response.data.user._id })
     } catch (error) {
       console.log("error sending receiveing the request", error);  
     }

@@ -328,3 +328,45 @@ export const percentageTimeSpentByCategory = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+import { User } from './userModel';
+import { Platform } from './platformModel';
+
+export const getTopPlatformsByTime = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed in the request parameters
+
+    // Aggregate to calculate total time spent on each platform by the user
+    const topPlatforms = await User.aggregate([
+      { $match: { _id: userId } }, // Match the user by userId
+      { $unwind: '$enrolledPlatforms' }, // Unwind the enrolledPlatforms array
+      {
+        $group: {
+          _id: '$enrolledPlatforms.platform', // Group by platform
+          totalTime: { $sum: '$enrolledPlatforms.timeSpent' }, // Calculate total time spent on each platform
+        },
+      },
+      { $sort: { totalTime: -1 } }, // Sort by totalTime in descending order
+      { $limit: 5 }, // Limit to the top 5 platforms
+    ]);
+
+    // Fetch platform details for the top platforms
+    const platformDetails = await Platform.find({ _id: { $in: topPlatforms.map(p => p._id) } });
+
+    // Create response with platform details including logos
+    const response = topPlatforms.map(platform => {
+      const platformDetail = platformDetails.find(p => p._id.toString() === platform._id.toString());
+      return {
+        platformId: platform._id,
+        name: platformDetail.name,
+        logoImage: platformDetail.logoImage,
+        totalTime: platform.totalTime,
+      };
+    });
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error('Error getting top platforms:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

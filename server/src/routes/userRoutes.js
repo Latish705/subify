@@ -22,5 +22,5 @@ userRouter.post('/addPlatformTimeSpent', addPlatformTime);
 userRouter.post('/enrollePlatform', enrolledPlatforms);
 userRouter.post('/addIntrestedplatform', addinterestedPlatforms);
 userRouter.get('/userIntrestedplatform', getUserInterestedPlatforms);
-userRouter.get('/percentageRoutebyCategory',percentageTimeSpentByCategory);
+userRouter.post('/percentageRoutebyCategory',percentageTimeSpentByCategory);
 export default userRouter;
