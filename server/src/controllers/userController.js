@@ -142,28 +142,29 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async userId => {
   }
 };
 
-export const addPlatfromTime = async (req, res) => {
+export const addPlatformTime = async (req, res) => {
   try {
-    const {userId, platformId, timeSpent} = req.body;
+    const { userId, platformId, timeSpent } = req.body;
     if ([userId, platformId, timeSpent].some(field => field === '')) {
-      return res.status(400).json({message: 'All fields are required'});
+      return res.status(400).json({ message: 'All fields are required' });
     }
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({message: 'User not found'});
+      return res.status(404).json({ message: 'User not found' });
     }
-    const platform = user.enrolledPlatforms.find(
-      platform => platform.platform.toString() === platformId,
+    const platform = user.interestedPlatforms.find(
+      platform => platform.toString() === platformId
     );
     if (!platform) {
-      return res.status(404).json({message: 'Platform not found'});
+      return res.status(404).json({ message: 'Platform not found' });
     }
-    user.enrolledPlatforms += timeSpent;
+    platform.timeSpent += timeSpent; // Update the timeSpent for the platform
     await user.save();
 
-    return res.status(200).json({message: 'Time added', success: true});
+    return res.status(200).json({ message: 'Time added', success: true });
   } catch (error) {
-    console.error('Error in addPlatfromTime:', error);
-    return res.status(500).json({message: 'Internal server error'});
+    console.error('Error in addPlatformTime:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
