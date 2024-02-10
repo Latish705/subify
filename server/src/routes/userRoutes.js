@@ -6,7 +6,8 @@ import {
   addPlatformTime,
   enrolledPlatforms,
   addinterestedPlatforms,
-  getUserInterestedPlatforms
+  getUserInterestedPlatforms,
+  percentageTimeSpentByCategory
 } from '../controllers/userController.js';
 
 const userRouter = Router();
@@ -21,5 +22,5 @@ userRouter.post('/addPlatformTimeSpent', addPlatformTime);
 userRouter.post('/enrollePlatform', enrolledPlatforms);
 userRouter.post('/addIntrestedplatform', addinterestedPlatforms);
 userRouter.get('/userIntrestedplatform', getUserInterestedPlatforms);
-
+userRouter.get('/percentageRoutebyCategory',percentageTimeSpentByCategory);
 export default userRouter;

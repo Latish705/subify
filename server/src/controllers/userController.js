@@ -283,7 +283,7 @@ export const getUserInterestedPlatforms = async (req, res) => {
 
 export const percentageTimeSpentByCategory = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const {userId} = req.body;
 
     // Find the user by ID
     const user = await User.findById(userId).populate('enrolledPlatforms.platform');
@@ -294,8 +294,8 @@ export const percentageTimeSpentByCategory = async (req, res) => {
 
     // Initialize an object to store the total time spent on each category
     const totalTimeByCategory = {
-      'Movie streaming': 0,
-      'Music streaming': 0,
+      'Entertainment': 0,
+      'Music': 0,
       'Education': 0,
       'Dating': 0,
       'Productivity': 0,
