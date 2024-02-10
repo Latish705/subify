@@ -4,7 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './screens/Home';
 import LoginForm from './screens/Login';
 import SignupForm from './screens/Signup';
-import Dashboard from './screens/Dashboard';
+import Insight from './screens/Insights';
+import Community from './screens/Community';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,8 +29,13 @@ export default function App() {
         <Stack.Screen name="Signup" component={SignupForm} />
 
         <Stack.Screen
-          name="Dashboard"
-          component={Dashboard}
+          name="Insight"
+          component={Insight}
+        />
+
+        <Stack.Screen
+          name="Community"
+          component={Community}
         />
       </Stack.Navigator>
     </NavigationContainer>

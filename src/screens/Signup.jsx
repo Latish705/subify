@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import AppwriteService from '../appwrite/service';
+
 
 const SignupForm = ({route, navigation}) => {
   const {client} = route.params;
@@ -20,10 +20,11 @@ const SignupForm = ({route, navigation}) => {
 
   const handleSignup = async () => {
     try {
-      const response = await client.createAccount({email, password, username});
-      console.log(response);
-      navigation.navigate('Home');
-      navigation.navigate('Dasboard', {username: 'example user'});
+      //const response = await client.createAccount({email, password, username});
+      //console.log(response);
+      //navigation.navigate('Home');
+      //navigation.navigate('Dasboard', {username: 'example user'});
+      navigation.navigate('Insight')
     } catch (error) {
       console.log('error sending the request', error);
     }
