@@ -3,6 +3,7 @@ import {Platform} from '../models/platformModel.js';
 export const register = async (req, res) => {
   try {
     const {email, password, username} = req.body;
+    console.log(email, password, username);
     if ([email, password, username].some(field => field === '')) {
       return res.status(400).json({message: 'All fields are required'});
     }
@@ -106,21 +107,20 @@ export const login = async (req, res) => {
 //   }
 // };
 
-const categories = [
-  "Entertainment",
-  "Music"
-]
+const categories = ['Entertainment', 'Music'];
 
 export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const user = await User.findById(userId).populate('enrolledPlatforms.platform');
+    const {userId} = req.body;
+    const user = await User.findById(userId).populate(
+      'enrolledPlatforms.platform',
+    );
     if (!user) {
       throw new Error('User not found');
     }
 
-    const enrolledPlatforms = user.enrolledPlatforms.filter(({ platform }) =>
-      categories.includes(platform.category) // Filter platforms based on categories
+    const enrolledPlatforms = user.enrolledPlatforms.filter(
+      ({platform}) => categories.includes(platform.category), // Filter platforms based on categories
     );
 
     console.log('Filtered Platforms:', enrolledPlatforms); // Add this logging statement
@@ -128,7 +128,7 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
     const categoryMap = {};
 
     for (const platform of enrolledPlatforms) {
-      const { category, timeSpent } = platform;
+      const {category, timeSpent} = platform;
       if (!categoryMap[category]) {
         categoryMap[category] = timeSpent;
       } else {
@@ -138,19 +138,15 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
 
     console.log('Category Map:', categoryMap); // Add this logging statement
 
-    return res.status(200).json({ totalTimeSpent: categoryMap });
+    return res.status(200).json({totalTimeSpent: categoryMap});
   } catch (error) {
     console.error(
       'Error in getUserTimeSpentInSimilarCategoryPlatforms:',
       error,
     );
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({error: 'Internal server error'});
   }
 };
-
-
-
-
 
 export const addPlatformTime = async (req, res) => {
   try {

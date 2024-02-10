@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   View,
@@ -7,12 +8,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
-
 const SignupForm = ({route, navigation}) => {
-  const {client} = route.params;
-
   console.log('route: ', route);
-  console.log('client: ', client);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +21,12 @@ const SignupForm = ({route, navigation}) => {
       //console.log(response);
       //navigation.navigate('Home');
       //navigation.navigate('Dasboard', {username: 'example user'});
-      navigation.navigate('Insight')
+      const response = await axios.post(
+        'http://localhost:8090/api/users/register',
+        {username, email, password},
+      );
+      console.log(response);
+      navigation.navigate('Insight');
     } catch (error) {
       console.log('error sending the request', error);
     }
