@@ -35,7 +35,8 @@ export const login = async (req, res) => {
         .status(400)
         .json({message: 'Please register first', success: false});
     }
-    if (user.password !== password) {
+    const isMatch = await user.matchPassword(password);
+    {
       return res
         .status(400)
         .json({message: 'Invalid credentials', success: false});
