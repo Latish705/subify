@@ -41,9 +41,10 @@ export const login = async (req, res) => {
         .status(400)
         .json({message: 'Invalid credentials', success: false});
     }
+
     return res
       .status(400)
-      .json({message: 'Invalid credentials', success: false});
+      .json({message: 'Successfully login', user, success: false});
   } catch (error) {
     console.log('Error logging in: ', error);
   }
