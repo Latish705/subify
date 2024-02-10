@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
+import { User } from '../../server/src/models/userModel';
 
 const LoginForm = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -10,12 +11,16 @@ const LoginForm = ({navigation}) => {
   const handleLogin = async () => {
     try {
       console.log("clicked");
+
+      console.log("email: ", email, "  Password: ", password)
+
       const response = await axios.post(
-        'http://172.16.30.27:8090/api/users/login',
-        { email, password }
+        'http://192.168.211.76:8090/api/users/login',
+        { email: email, password: password }
       );
-      console.log(response)
-      if (response.data.success) navigation.navigate('Dashboard')
+
+      console.log(response.data)
+      if (response.data.success) navigation.navigate('Insight', {user: response.data.user})
     } catch (error) {
       console.log("error sending receiveing the request", error);  
     }

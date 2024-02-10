@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView } from 're
 
 export default function Insight({ navigation, userId }) {
 
-    // defineing user here
+    
 
     return (
         <ScrollView>
