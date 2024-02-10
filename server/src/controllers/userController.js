@@ -153,7 +153,7 @@ export const addPlatformTime = async (req, res) => {
       return res.status(404).json({message: 'User not found'});
     }
     const platform = user.enrolledPlatforms.find(
-      platform => platform.toString() === platformId,
+      platform => platform.platform === platformId,
     );
     if (!platform) {
       return res.status(404).json({message: 'Platform not found'});
