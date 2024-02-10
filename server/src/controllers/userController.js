@@ -327,41 +327,41 @@ export const percentageTimeSpentByCategory = async (req, res) => {
 
 export const getTopPlatformsByTime = async (req, res) => {
   try {
-    const {userId} = req.body // Assuming userId is passed in the request parameters
+    // Extract userId from request parameters
+    const { userId } = req.params;
 
-    // Aggregate to calculate total time spent on each platform by the user
-    const topPlatforms = await User.aggregate([
-      { $match: { _id: userId } }, // Match the user by userId
-      { $unwind: '$enrolledPlatforms' }, // Unwind the enrolledPlatforms array
-      {
-        $group: {
-          _id: '$enrolledPlatforms.platform', // Group by platform
-          totalTime: { $sum: '$enrolledPlatforms.timeSpent' }, // Calculate total time spent on each platform
-        },
-      },
-      { $sort: { totalTime: -1 } }, // Sort by totalTime in descending order
-      { $limit: 5 }, // Limit to the top 5 platforms
-    ]);
-    
+    // Find the user by userId
+    const user = await User.findById(userId);
 
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-    // Fetch platform details for the top platforms
-    const platformDetails = await Platform.find({ _id: { $in: topPlatforms.map(p => p._id) } });
+    // Get the enrolledPlatforms array for the user
+    const enrolledPlatforms = user.enrolledPlatforms;
 
-    // Create response with platform details including logos
-    const response = topPlatforms.map(platform => {
-      const platformDetail = platformDetails.find(p => p._id.toString() === platform._id.toString());
-      return {
-        platformId: platform._id,
-        name: platformDetail.name,
-        logoImage: platformDetail.logoImage,
-        totalTime: platform.totalTime,
-      };
-    });
+    // Sort the enrolledPlatforms array based on timeSpent in descending order
+    enrolledPlatforms.sort((a, b) => b.timeSpent - a.timeSpent);
 
-    res.status(200).json(response);
+    // Get the top 5 platforms
+    const topPlatforms = enrolledPlatforms.slice(0, 5);
+
+    // Extract platform IDs from the topPlatforms array
+    const platformIds = topPlatforms.map(platform => platform.platform);
+
+    // Find the platform documents corresponding to the platformIds
+    const platforms = await Platform.find({ _id: { $in: platformIds } });
+
+    // Extract relevant information (e.g., name, logoImage) from the platform documents
+    const topPlatformsInfo = platforms.map(platform => ({
+      name: platform.name,
+      logoImage: platform.logoImage
+    }));
+
+    // Send the top 5 platforms info as the response
+    res.status(200).json({ topPlatforms: topPlatformsInfo });
   } catch (error) {
-    console.error('Error getting top platforms:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error finding top platforms:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
