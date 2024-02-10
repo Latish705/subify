@@ -1,5 +1,5 @@
 import {User} from '../models/userModel.js';
-
+import {Platform} from '../models/platformModel.js';
 export const register = async (req, res) => {
   try {
     const {email, password, username} = req.body;
@@ -165,5 +165,27 @@ export const addPlatfromTime = async (req, res) => {
   } catch (error) {
     console.error('Error in addPlatfromTime:', error);
     return res.status(500).json({message: 'Internal server error'});
+  }
+};
+
+export const enrollInPlatform = async (req, res) => {
+  try {
+    const {userId, platformId} = req.body;
+    if ([userId, platformId].some(field => field === '')) {
+      return res.status(400).json({message: 'All fields are required'});
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({message: 'User not found'});
+    }
+    const platform = await Platform.findById(platformId);
+    if (!platform) {
+      return res.status(404).json({message: 'Platform not found'});
+    }
+    user.enrolledPlatforms.push({platform: platformId});
+
+    return res.status(200).json({message: 'Enrolled', success: true});
+  } catch (error) {
+    console.log('Error enrolling in platform: ', error);
   }
 };
