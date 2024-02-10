@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 
 
@@ -8,7 +8,7 @@ export default function Insight({ navigation, userId }) {
     // defineing user here
 
     return (
-        <View>
+        <ScrollView>
             <View>
                 <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Inter'}}>
                     Your Spending Chart
@@ -83,16 +83,10 @@ export default function Insight({ navigation, userId }) {
             </View>
 
             <View>
-                <View>
-                    <Button 
-                        title='Community'
-                        onPress={()=>{
-                            navigation.navigate('Community')
-                        }}
-                        
-                        color="black"
-                        style={{maxWidth: 20, maxWidth:100}}
-                    />
+                <View style={{display: 'flex', flexDirection: 'column', backgroundColor: 'black', height: 55, width: 180, alignSelf: 'center', justifyContent: 'center', alignItems: 'center', borderRadius: 10, margin: 30}}>
+                    <TouchableOpacity>
+                        <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold'}}>Community</Text>
+                    </TouchableOpacity>
                 </View>
                 <Text>
                     Budget Analysis
@@ -141,7 +135,7 @@ export default function Insight({ navigation, userId }) {
                 </View>
             </View>
             
-        </View>
+        </ScrollView>
     )
 }
 
@@ -176,5 +170,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black',
         fontWeight: '600'
+    },
+    buttonComp: {
+        width: 30
     }
 })
