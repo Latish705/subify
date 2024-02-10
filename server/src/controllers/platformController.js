@@ -1,4 +1,4 @@
-import Platform from '../models/platformModel.js';
+import {Platform} from '../models/platformModel.js';
 export const addPlatform = async (req, res) => {
   try {
     const {catagory, name, plans} = req.body;
@@ -13,13 +13,11 @@ export const addPlatform = async (req, res) => {
     }
     const newPlatform = new Platform({catagory, name, plans});
     await newPlatform.save();
-    res
-      .status(201)
-      .json({
-        message: 'Platform created',
-        platform: newPlatform,
-        success: true,
-      });
+    res.status(201).json({
+      message: 'Platform created',
+      platform: newPlatform,
+      success: true,
+    });
   } catch (error) {
     console.log('Error creating platform: ', error);
   }

@@ -1,4 +1,6 @@
-const platformSchema = new Schema({
+import mongoose, {Schema} from 'mongoose';
+
+const platformSchema = new mongoose.Schema({
   category: {type: String, required: true},
   name: {type: String, required: true},
   plans: [
@@ -10,4 +12,4 @@ const platformSchema = new Schema({
   usersLinked: [{type: Schema.Types.ObjectId, ref: 'User'}],
 });
 
-export default Platform = mongoose.model('Platform', platformSchema);
+export const Platform = mongoose.model('Platform', platformSchema);
