@@ -28,15 +28,20 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const {email, password} = req.body;
-    if ([email, password].some(field => field === '')) {
-      return res.status(400).json({message: 'All fields are required'});
+    console.log(email, password)
+
+    if (!email && !password) {
+      console.log("email")
+      return res.status(400).json({ message: "email or password not found"});
     }
+
     const user = await User.findOne({email});
     if (!user) {
       return res
         .status(400)
         .json({message: 'Please register first', success: false});
     }
+
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res
