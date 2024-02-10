@@ -4,7 +4,7 @@ import {
   register,
   getUserTimeSpentInSimilarCategoryPlatforms,
   addPlatformTime,
-  enrollInPlatform,
+  enrolledPlatforms,
 } from '../controllers/userController.js';
 
 const userRouter = Router();
@@ -16,5 +16,5 @@ userRouter.post(
   getUserTimeSpentInSimilarCategoryPlatforms,
 );
 userRouter.post('/addPlatformTimeSpent', addPlatformTime);
-userRouter.post('/enrollePlatform', enrollInPlatform);
+userRouter.post('/enrollePlatform', enrolledPlatforms);
 export default userRouter;

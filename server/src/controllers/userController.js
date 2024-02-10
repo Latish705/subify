@@ -56,15 +56,15 @@ export const login = async (req, res) => {
 // export const getCatagory = async (req, res) => {
 //   try {
 //     const {userId} = req.body;
-//     const user = await User.findById(userId).populate('interestedPlatforms'); // Populate the interestedPlatforms field
+//     const user = await User.findById(userId).populate('enrolledPlatforms'); // Populate the enrolledPlatforms field
 //     if (!user) {
 //       return res.status(404).json({message: 'User not found'});
 //     }
 
-//     const interestedPlatforms = user.interestedPlatforms;
+//     const enrolledPlatforms = user.enrolledPlatforms;
 
-//     // Fetch all platforms that are in the user's interestedPlatforms list
-//     const platforms = await Platform.find({_id: {$in: interestedPlatforms}});
+//     // Fetch all platforms that are in the user's enrolledPlatforms list
+//     const platforms = await Platform.find({_id: {$in: enrolledPlatforms}});
 
 //     // Extract categories of platforms
 //     const categories = platforms.map(platform => platform.category);
@@ -72,14 +72,14 @@ export const login = async (req, res) => {
 //     // Find other users who are interested in the same categories
 //     const usersWithMatchingCategories = await User.find({
 //       _id: {$ne: user._id}, // Exclude the current user
-//       'interestedPlatforms.category': {$in: categories}, // Match the category of interestedPlatforms
-//     }).populate('interestedPlatforms');
+//       'enrolledPlatforms.category': {$in: categories}, // Match the category of enrolledPlatforms
+//     }).populate('enrolledPlatforms');
 
 //     const similarPlatforms = {};
 
 //     // Iterate over users with matching categories
 //     for (const otherUser of usersWithMatchingCategories) {
-//       for (const platform of otherUser.interestedPlatforms) {
+//       for (const platform of otherUser.enrolledPlatforms) {
 //         if (categories.includes(platform.category)) {
 //           // If the platform category matches, add to similarPlatforms and calculate total time spent
 //           if (!similarPlatforms[platform._id]) {
@@ -106,42 +106,51 @@ export const login = async (req, res) => {
 //   }
 // };
 
+const categories = [
+  "Entertainment",
+  "Music"
+]
+
 export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
   try {
-    const {userId} = req.body;
-    const user = await User.findById(userId).populate('interestedPlatforms'); // Populate the interestedPlatforms field
+    const { userId } = req.body;
+    const user = await User.findById(userId).populate('enrolledPlatforms.platform');
     if (!user) {
       throw new Error('User not found');
     }
 
-    const interestedPlatforms = user.interestedPlatforms;
+    const enrolledPlatforms = user.enrolledPlatforms.filter(({ platform }) =>
+      categories.includes(platform.category) // Filter platforms based on categories
+    );
 
-    const categorySet = new Set(); // Set to store categories of interested platforms
-    interestedPlatforms.forEach(platform => categorySet.add(platform.category));
+    console.log('Filtered Platforms:', enrolledPlatforms); // Add this logging statement
 
-    let totalTimeSpent = [];
+    const categoryMap = {};
 
-    for (const category of categorySet) {
-      // Find platforms in the same category and sum up their timeSpent
-      const platformsInCategory = user.interestedPlatforms.filter(
-        platform => platform.category === category,
-      );
-      const timeSpentInCategory = platformsInCategory.reduce(
-        (acc, curr) => acc + curr.timeSpent,
-        0,
-      );
-      totalTimeSpent.push(timeSpentInCategory);
+    for (const platform of enrolledPlatforms) {
+      const { category, timeSpent } = platform;
+      if (!categoryMap[category]) {
+        categoryMap[category] = timeSpent;
+      } else {
+        categoryMap[category] += timeSpent;
+      }
     }
 
-    return totalTimeSpent;
+    console.log('Category Map:', categoryMap); // Add this logging statement
+
+    return res.status(200).json({ totalTimeSpent: categoryMap });
   } catch (error) {
     console.error(
       'Error in getUserTimeSpentInSimilarCategoryPlatforms:',
       error,
     );
-    throw error;
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+
+
 
 export const addPlatformTime = async (req, res) => {
   try {
@@ -171,7 +180,7 @@ export const addPlatformTime = async (req, res) => {
   }
 };
 
-export const enrollInPlatform = async (req, res) => {
+export const enrolledPlatforms = async (req, res) => {
   try {
     const {userId, platformId} = req.body;
     if ([userId, platformId].some(field => field === '')) {
