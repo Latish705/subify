@@ -36,11 +36,14 @@ export const login = async (req, res) => {
         .json({message: 'Please register first', success: false});
     }
     const isMatch = await user.matchPassword(password);
-    {
+    if (!isMatch) {
       return res
         .status(400)
         .json({message: 'Invalid credentials', success: false});
     }
+    return res
+      .status(400)
+      .json({message: 'Invalid credentials', success: false});
   } catch (error) {
     console.log('Error logging in: ', error);
   }
