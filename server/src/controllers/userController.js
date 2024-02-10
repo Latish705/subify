@@ -28,20 +28,15 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const {email, password} = req.body;
-    console.log(email, password)
-
-    if (!email && !password) {
-      console.log("email")
-      return res.status(400).json({ message: "email or password not found"});
+    if ([email, password].some(field => field === '')) {
+      return res.status(400).json({message: 'All fields are required'});
     }
-
     const user = await User.findOne({email});
     if (!user) {
       return res
         .status(400)
         .json({message: 'Please register first', success: false});
     }
-
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res
@@ -329,12 +324,10 @@ export const percentageTimeSpentByCategory = async (req, res) => {
   }
 }
 
-import { User } from './userModel';
-import { Platform } from './platformModel';
 
 export const getTopPlatformsByTime = async (req, res) => {
   try {
-    const userId = req.params.userId; // Assuming userId is passed in the request parameters
+    const {userId} = req.body // Assuming userId is passed in the request parameters
 
     // Aggregate to calculate total time spent on each platform by the user
     const topPlatforms = await User.aggregate([
@@ -349,6 +342,8 @@ export const getTopPlatformsByTime = async (req, res) => {
       { $sort: { totalTime: -1 } }, // Sort by totalTime in descending order
       { $limit: 5 }, // Limit to the top 5 platforms
     ]);
+    
+
 
     // Fetch platform details for the top platforms
     const platformDetails = await Platform.find({ _id: { $in: topPlatforms.map(p => p._id) } });
