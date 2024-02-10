@@ -1,9 +1,8 @@
-import { View, Text, Button } from 'react-native';
+import {View, Text, Button} from 'react-native';
 import React from 'react';
 import AppwriteService from '../appwrite/service';
 
-export default function HomeScreen({ navigation }) {
-
+export default function HomeScreen({navigation}) {
   const client = new AppwriteService();
 
   return (
@@ -13,18 +12,16 @@ export default function HomeScreen({ navigation }) {
       <Button
         title="Signup"
         onPress={() => {
-          navigation.navigate("Signup", { client });
+          navigation.navigate('Signup', {client});
         }}
       />
 
       <Button
         title="Login"
         onPress={() => {
-          navigation.navigate("Login")
+          navigation.navigate('Login', {client});
         }}
       />
     </View>
   );
-};
-
-
+}

@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import { View, TextInput,Text,TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import AppwriteService from '../appwrite/service';
 
-const SignupForm = ({ route }) => {
-  const { client } = route.params;
+const SignupForm = ({route}) => {
+  const {client} = route.params;
 
-  
-  console.log("route: ", route)
-  console.log("client: ", client)
+  console.log('route: ', route);
+  console.log('client: ', client);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -15,10 +20,10 @@ const SignupForm = ({ route }) => {
 
   const handleSignup = async () => {
     try {
-      const response = await client.createAccount({ email, password, username })
+      const response = await client.createAccount({email, password, username});
       console.log(response);
     } catch (error) {
-      console.log("error sending the request", error);
+      console.log('error sending the request', error);
     }
   };
 
@@ -40,7 +45,7 @@ const SignupForm = ({ route }) => {
         secureTextEntry
       />
       <TextInput
-        style={styles.input}  
+        style={styles.input}
         placeholder="Email"
         placeholderTextColor="gray"
         onChangeText={setEmail}
@@ -48,10 +53,7 @@ const SignupForm = ({ route }) => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSignup}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
     </View>
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 40,
     borderWidth: 0,
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
     borderColor: 'gray',
     marginVertical: 10,
     paddingHorizontal: 10,
@@ -80,11 +82,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 8,
   },
-  buttonText:{
+  buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    letterSpacing: 0.7
-  }
+    letterSpacing: 0.7,
+  },
 });
 
 export default SignupForm;
