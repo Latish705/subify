@@ -43,8 +43,8 @@ export const login = async (req, res) => {
     }
 
     return res
-      .status(400)
-      .json({message: 'Successfully login', user, success: false});
+      .status(200)
+      .json({message: 'Successfully login',userId:user._id ,user, success: true});
   } catch (error) {
     console.log('Error logging in: ', error);
   }
