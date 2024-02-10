@@ -23,28 +23,28 @@ export default function Insight({ navigation, userId }) {
                     </View>
 
                     <View style={[styles.categoryContainer]}> 
-                        <View style={[styles.box, {backgroundColor: 'purple'}]}></View>
+                        <View style={[styles.box, {backgroundColor: 'purple' }]}></View>
                         <View style={styles.bottomBorder}>
                             <Text style={[styles.category]}>Music Streaming</Text>
                         </View>
                     </View>
 
                     <View style={[styles.categoryContainer]}> 
-                        <View style={[styles.box, { backgroundColor: '#ff1493'}]}></View>
+                        <View style={[styles.box, { backgroundColor: '#ff1493' }]}></View>
                         <View style={styles.bottomBorder}>
                             <Text style={[styles.category]}>Dating</Text>
                         </View>
                     </View>
 
                     <View style={[styles.categoryContainer]}>
-                        <View style={[styles.box, { backgroundColor: 'green'}]}></View>
+                        <View style={[styles.box, { backgroundColor: 'green' }]}></View>
                         <View style={styles.bottomBorder}>
                             <Text style={[styles.category]}>Education</Text>
                         </View>
                     </View>
 
                     <View style={[styles.categoryContainer]}>
-                        <View style={[styles.box, { backgroundColor: 'blue'}]}></View>
+                        <View style={[styles.box, { backgroundColor: 'blue' }]}></View>
                         <View style={styles.bottomBorder}>
                             <Text style={[styles.category]}>Productivity</Text>
                         </View>

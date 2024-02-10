@@ -1,18 +1,24 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
 
-const LoginForm = ({route, navigation}) => {
+const LoginForm = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const client = route.params?.client;
+
+  
   const handleLogin = async () => {
-    // Call the onLogin function passed from the parent component
-    //onLogin(email, password);
-    // const response = await client.login({email, password});
-    // console.log(response);r
-    // navigation.navigate('Home');
-    console.log('clicked');
-    navigation.navigate('Dasboard', {username: 'example user'});
+    try {
+      console.log("clicked");
+      const response = await axios.post(
+        'http://172.16.30.27:8090/api/users/login',
+        { email, password }
+      );
+      console.log(response)
+      if (response.data.success) navigation.navigate('Dashboard')
+    } catch (error) {
+      console.log("error sending receiveing the request", error);  
+    }
   };
 
   return (
