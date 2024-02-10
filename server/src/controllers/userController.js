@@ -106,8 +106,9 @@ export const login = async (req, res) => {
 //   }
 // };
 
-export const getUserTimeSpentInSimilarCategoryPlatforms = async userId => {
+export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
   try {
+    const {userId} = req.body;
     const user = await User.findById(userId).populate('interestedPlatforms'); // Populate the interestedPlatforms field
     if (!user) {
       throw new Error('User not found');
