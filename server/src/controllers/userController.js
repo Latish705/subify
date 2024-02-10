@@ -183,6 +183,7 @@ export const enrollInPlatform = async (req, res) => {
       return res.status(404).json({message: 'Platform not found'});
     }
     user.enrolledPlatforms.push({platform: platformId});
+    await user.save({validateBeforeSave: false});
 
     return res.status(200).json({message: 'Enrolled', success: true});
   } catch (error) {
