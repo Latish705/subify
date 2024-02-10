@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TextInput,
@@ -7,32 +7,40 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const SignupForm = ({navigation}) => {
+const SignupForm = ({navigation, client}) => {
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const handleLogin = () => {
     // Navigate to the login page
-    navigation.navigate('Login'); // Replace 'Login' with the appropriate screen name
+    const response = client.createAccount({username});
+    // navigation.navigate('Login'); // Replace 'Login' with the appropriate screen name
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Subify</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        placeholderTextColor="gray"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="gray"
-        secureTextEntry
-      />
+
       <TextInput
         style={styles.input}
         placeholder="Email"
         placeholderTextColor="gray"
         keyboardType="email-address"
         autoCapitalize="none"
+        onChange={e => setEmail(e.target.value)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        placeholderTextColor="gray"
+        secureTextEntry
+        onChange={e => setPassword(e.target.value)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        placeholderTextColor="gray"
+        onChange={e => setUsername(e.target.value)}
       />
 
       <TouchableOpacity
