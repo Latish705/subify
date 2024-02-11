@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
 
 export default function Insight({navigation, route}) {
@@ -19,25 +20,40 @@ export default function Insight({navigation, route}) {
     Productivity: '',
   });
 
+  const [topPlatforms, setTopPlatforms] = React.useState([]);
+
   React.useEffect(() => {
-    const fetchData = async () => {
+    const fetchPercentage = async () => {
       try {
         const response = await axios.post(
-          'http://172.16.30.20:8090/api/users/percentageRoutebyCategory',
+          'http://192.168.211.76:8090/api/users/percentageRoutebyCategory',
           {userId},
         );
         const data = response.data.percentageByCategory;
-
         setPercentage(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.log('Error fetching percentage:', error);
       }
     };
 
-    fetchData();
+    const fetchTopPlatforms = async () => {
+      try {
+        const response = await axios.post(
+          'http://192.168.211.76:8090/api/users/topPlatformsByTime',
+          {userId},
+        );
+        setTopPlatforms(response.data.topPlatforms);
+      } catch (error) {
+        console.log('Error fetching top platforms:', error);
+      }
+    };
+
+    fetchPercentage();
+    fetchTopPlatforms();
   }, []);
 
   const handleCommunity = () => {
+    // Navigate to the Community screen
     navigation.navigate('Community');
   };
 
@@ -52,7 +68,8 @@ export default function Insight({navigation, route}) {
               style={[
                 styles.box,
                 {backgroundColor: getColorForCategory(category)},
-              ]}></View>
+              ]}
+            />
             <View style={styles.bottomBorder}>
               <Text style={styles.category}>{category}</Text>
               <Text style={styles.percentage}>{value}%</Text>
@@ -61,13 +78,24 @@ export default function Insight({navigation, route}) {
         ))}
 
         <View style={styles.insightsContainer}>
-          <Text style={styles.heading}>Insights for you</Text>
+          <Text style={styles.insightsText}>Insights for you</Text>
           <Text style={styles.insightsText}>
-            Replace this text with insights received from the backend
+            This will be replaced by the string received from the backend
           </Text>
         </View>
 
-        {/* Additional sections for app usage trends, budget analysis, etc. */}
+        <View style={styles.appTrendsContainer}>
+          <Text style={styles.trend}>Apps that you used Most</Text>
+          <View style={styles.platformImagesContainer}>
+            {topPlatforms.map((platform, index) => (
+              <Image
+                key={index}
+                style={styles.platformImage}
+                source={{uri: platform.logoImage}}
+              />
+            ))}
+          </View>
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={handleCommunity}>
           <Text style={styles.buttonText}>Community</Text>
@@ -78,7 +106,6 @@ export default function Insight({navigation, route}) {
 }
 
 const getColorForCategory = category => {
-  // Define colors for each category
   const categoryColors = {
     Dating: 'orange',
     Education: 'green',
@@ -86,8 +113,6 @@ const getColorForCategory = category => {
     Music: '#ff1493',
     Productivity: 'blue',
   };
-
-  // Return color for the given category, defaulting to black if not found
   return categoryColors[category] || 'black';
 };
 
@@ -140,6 +165,29 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'black',
     marginTop: 19,
+  },
+  appTrendsContainer: {
+    marginTop: 60,
+    marginBottom: 40,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    backgroundColor: '#D5D2D2',
+  },
+  trend: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  platformImagesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+  },
+  platformImage: {
+    width: 100,
+    height: 100,
+    marginVertical: 10,
   },
   button: {
     backgroundColor: 'black',
