@@ -376,3 +376,25 @@ export const getTopPlatformsByTime = async (req, res) => {
     res.status(500).json({message: 'Internal server error'});
   }
 };
+
+export const FindSameCategoryUsers = async (req, res) => {
+  try {
+    const {userId, platform} = req.body;
+    console.log(userId);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(405).json({message: 'User not found'});
+    }
+    const platformInterested = user.platformInterested;
+    const users = await User.find({
+      _id: {$ne: userId},
+      platformInterested: {$in: platformInterested},
+    });
+    res
+      .status(200)
+      .json({success: true, message: 'Fetch same interest users', users});
+  } catch (error) {
+    console.error('Error in FindSameCategoryUsers:', error);
+    res.status(500).json({error: 'Internal server error'});
+  }
+};

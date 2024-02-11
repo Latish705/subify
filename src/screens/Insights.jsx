@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-const ip = ['172.16.30.20', '172.16.30.27'];
+export const ip = ['172.16.30.20', '172.16.30.27'];
 
 export default function Insight({navigation, route}) {
   const {userId} = route.params;
@@ -57,7 +57,7 @@ export default function Insight({navigation, route}) {
 
   const handleCommunity = () => {
     // Navigate to the Community screen
-    navigation.navigate('Community', { userId: userId });
+    navigation.navigate('Community', {userId});
   };
 
   return (
