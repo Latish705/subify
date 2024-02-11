@@ -66,6 +66,7 @@ export default function Pair({userId}) {
             borderBottomWidth: 1,
             borderBottomColor: 'black',
             fontSize: 20,
+            color: 'black',
             fontWeight: 'bold',
             width: 150,
           }}

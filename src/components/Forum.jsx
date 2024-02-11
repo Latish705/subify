@@ -1,5 +1,13 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  TextInput,
+} from 'react-native';
 import axios from 'axios';
 
 const ContentCard = ({content}) => {
@@ -14,51 +22,72 @@ const ContentCard = ({content}) => {
   );
 };
 
-
 export default function Forum() {
   const [contents, setContent] = React.useState([]); // Initialize as an array
   const [showInput, setShowInput] = React.useState(false);
-  
 
   const InputForm = () => {
-    const [post, setPost] = React.useState('')
+    const [post, setPost] = React.useState('');
     return (
-      <View style={{width: 300, right: 0, left: 50, top: 20 , position: 'absolute', backgroundColor: 'gray', padding: 5}}>
+      <View
+        style={{
+          width: 300,
+          right: 0,
+          left: 50,
+          top: 20,
+          position: 'absolute',
+          backgroundColor: 'gray',
+          padding: 5,
+        }}>
         <TextInput
           placeholder="Your opinion here..."
-          style={{ borderBottomWidth : 1, borderBottomColor: 'black' }}
+          style={{borderBottomWidth: 1, borderBottomColor: 'black'}}
           value={post}
           onChangeText={setPost}
         />
         <View>
-          <TouchableOpacity style={{ backgroundColor: 'black', width: 70, height: 40, justifyContent: 'center', alignItems: 'center', display: 'flex', borderRadius: 5, marginTop: 5}}
-            onPress={() => {handleSendPost(post)}}
-          >
-                <Text style={{ color: 'white', fontSize: 18, letterSpacing: 1 }}>
-                  Send
-                </Text>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'black',
+              width: 70,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+              borderRadius: 5,
+              marginTop: 5,
+            }}
+            onPress={() => {
+              handleSendPost(post);
+            }}>
+            <Text style={{color: 'white', fontSize: 18, letterSpacing: 1}}>
+              Send
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
-  const handleSendPost = async (post) => {
+  const handleSendPost = async post => {
     try {
-      const response = await axios.post('http://172.16.30.27:8090/api/posts/addPost', {title: post})
+      const response = await axios.post(
+        'http://172.16.30.27:8090/api/posts/addPost',
+        {title: post},
+      );
       console.log(response);
       console.log(response.data.message);
       Alert.alert(response.data.message);
       return;
     } catch (error) {
       console.log(error);
-      Alert.alert("error sending the error");
+      Alert.alert('error sending the error');
     }
-  }
+  };
 
   const toggleShowInput = () => {
     setShowInput(prev => !prev);
-  }
+  };
 
   React.useEffect(() => {
     const handleGetAllPost = async () => {
@@ -88,9 +117,7 @@ export default function Forum() {
         </Text>
       </TouchableOpacity>
 
-      { showInput &&
-        <InputForm/>
-      }
+      {showInput && <InputForm />}
     </ScrollView>
   );
 }

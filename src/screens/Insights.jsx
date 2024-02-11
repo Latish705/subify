@@ -94,6 +94,8 @@ export default function Insight({navigation, route}) {
               <Image
                 key={index}
                 style={styles.platformImage}
+                width={100}
+                height={100}
                 source={{uri: platform.logoImage}}
               />
             ))}
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
   },
   platformImage: {
     width: 100,
-    height: 100,
+    objectFit: 'contain',
     marginVertical: 10,
   },
   button: {
