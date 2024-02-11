@@ -57,7 +57,7 @@ export default function Insight({navigation, route}) {
 
   const handleCommunity = () => {
     // Navigate to the Community screen
-    navigation.navigate('Community');
+    navigation.navigate('Community', { userId: userId });
   };
 
   return (

@@ -21,8 +21,14 @@ export default function Community() {
 
   return (
     <ScrollView style={{height: 'auto'}}>
-      <Button title="Forum" onPress={forumClick} color="black" />
-      <Button title="Pair" onPress={pairClck} color="black" />
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 2}}>
+            <View style={{marginTop: 1, width: 196}}>
+                <Button title="Forum" onPress={forumClick} color="black" />
+            </View>
+            <View style={{marginTop: 1, width: 196}}>
+                <Button title="Pair" onPress={pairClck} color="black"/>
+            </View>
+      </View>
       {showForum && (
         <View style={{overflow: 'scroll'}}>
           <Forum />
@@ -31,7 +37,7 @@ export default function Community() {
 
       {showPair && (
         <View style={{overflow: 'scroll'}}>
-          <Pair />
+          <Pair userId={userId} />
         </View>
       )}
     </ScrollView>
