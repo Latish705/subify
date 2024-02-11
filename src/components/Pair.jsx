@@ -27,6 +27,9 @@ export default function Pair({userId}) {
       );
 
       const users = response.data.users;
+      const username = users.map(user => user.username);
+      Alert.alert(JSON.stringify(username));
+
       console.log(response);
       console.log(users);
     } catch (error) {

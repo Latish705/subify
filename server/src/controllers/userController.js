@@ -384,11 +384,11 @@ export const FindSameCategoryUsers = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(405).json({message: 'User not found'});
+      z;
     }
-    const platformInterested = user.platformInterested;
     const users = await User.find({
       _id: {$ne: userId},
-      platformInterested: {$in: platformInterested},
+      platformInterested: {$in: platform},
     });
     res
       .status(200)
