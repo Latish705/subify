@@ -3,15 +3,15 @@ import {Post} from '../models/PostModel.js';
 import {Buddy} from '../models/buddyModel.js';
 export const addPost = async (req, res) => {
   try {
-    const {userId, title, price} = req.body;
-    if ([userId, title, price].some(field => field === '')) {
+    const {userId, title} = req.body;
+    if ([userId, title].some(field => field === '')) {
       return res.status(400).json({message: 'All fields are required'});
     }
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({message: 'User not found'});
     }
-    const newPost = new Post({post: title, price, user: userId});
+    const newPost = new Post({post: title, user: userId});
     if (!newPost) {
       return res.status(400).json({message: 'Post not created'});
     }
