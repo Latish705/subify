@@ -1,68 +1,70 @@
-
 import * as React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import axios from 'axios';
 
-const ContentCard = (content) => {
-    return (
-        <View style={styles.box}>
-            <View>
-                <Text style={{ fontSize: 20, color: 'black', fontWeight:'bold'}}>
-                    tehre is some taiwe sdfi nsa fids ksdfaskldf sdjfij nisdjf nfifeio nfdjsnfoi fndjkns f
-                </Text>
-            </View>
-        </View>
-    )
-}
+const ContentCard = ({content}) => {
+  return (
+    <View style={styles.box}>
+      <View>
+        <Text style={{fontSize: 20, color: 'black', fontWeight: 'bold'}}>
+          {content.post}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 export default function Forum() {
+  const [contents, setContent] = React.useState([]); // Initialize as an array
 
-    const [content, setContent] = React.useState({});
+  React.useEffect(() => {
+    const handleGetAllPost = async () => {
+      try {
+        const response = await axios.get(
+          'http://172.16.30.20:8090/api/posts/getAllPosts',
+        );
+        setContent(response.data.posts); // Set contents as array of posts
+      } catch (error) {
+        console.log('error sending the request', error);
+      }
+    };
+    handleGetAllPost();
+  }, []);
 
-    React.useEffect(()=>{
-        // getting the content of the card...
-    }) 
+  return (
+    <ScrollView>
+      <View>
+        {contents.map((content, index) => (
+          <ContentCard key={index} content={content} />
+        ))}
+      </View>
 
-    return (
-        <ScrollView style={{ overflow: 'scroll'}}>
-            <View style={{overflow: 'scroll'}}>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-                <ContentCard/>
-            </View>
-
-            <View style={styles.add}>
-                 <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>ADD</Text>
-            </View>
-        </ScrollView>
-    )
+      <View style={styles.add}>
+        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
+          ADD
+        </Text>
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    box: {
-        width: '100%',
-        display: 'flex',
-        padding: 10,
-        backgroundColor: '#ECECEC'
-    },
-    add: {
-        backgroundColor: 'black',
-        color: 'white',
-        height: 80,
-        width: 80,
-        position: 'fixed',
-        top: 0,
-
-        borderRadius: 100,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
+  box: {
+    width: '100%',
+    display: 'flex',
+    padding: 10,
+    backgroundColor: '#ECECEC',
+  },
+  add: {
+    backgroundColor: 'black',
+    color: 'white',
+    height: 80,
+    width: 80,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

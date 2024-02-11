@@ -1,5 +1,7 @@
 import {User} from '../models/userModel.js';
 import {Platform} from '../models/platformModel.js';
+import {Buddy} from '../models/buddyModel.js';
+import {Post} from '../models/PostModel.js';
 import mongoose from 'mongoose';
 export const register = async (req, res) => {
   try {
@@ -152,9 +154,11 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
 
 export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
   try {
-    const { userId, categories } = req.body;
-    const user = await User.findById(userId).populate('enrolledPlatforms.platform');
-    
+    const {userId, categories} = req.body;
+    const user = await User.findById(userId).populate(
+      'enrolledPlatforms.platform',
+    );
+
     if (!user) {
       throw new Error('User not found');
     }
@@ -162,8 +166,8 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
     // If no categories are provided, default to all categories
     const filterCategories = categories || ['Entertainment', 'Music'];
 
-    const enrolledPlatforms = user.enrolledPlatforms.filter(({ platform }) =>
-      filterCategories.includes(platform.category)
+    const enrolledPlatforms = user.enrolledPlatforms.filter(({platform}) =>
+      filterCategories.includes(platform.category),
     );
 
     console.log('Filtered Platforms:', enrolledPlatforms);
@@ -171,7 +175,7 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
     const categoryMap = {};
 
     for (const platform of enrolledPlatforms) {
-      const { category, timeSpent } = platform;
+      const {category, timeSpent} = platform;
       if (!categoryMap[category]) {
         categoryMap[category] = timeSpent;
       } else {
@@ -181,14 +185,15 @@ export const getUserTimeSpentInSimilarCategoryPlatforms = async (req, res) => {
 
     console.log('Category Map:', categoryMap);
 
-    return res.status(200).json({ totalTimeSpent: categoryMap });
+    return res.status(200).json({totalTimeSpent: categoryMap});
   } catch (error) {
-    console.error('Error in getUserTimeSpentInSimilarCategoryPlatforms:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(
+      'Error in getUserTimeSpentInSimilarCategoryPlatforms:',
+      error,
+    );
+    return res.status(500).json({error: 'Internal server error'});
   }
 };
-
-
 
 export const addPlatformTime = async (req, res) => {
   try {
@@ -242,63 +247,64 @@ export const enrolledPlatforms = async (req, res) => {
 };
 
 export const addinterestedPlatforms = async (req, res) => {
-  const { userId, platformId } = req.body;
+  const {userId, platformId} = req.body;
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({message: 'User not found'});
     }
     // Convert platformId to ObjectId
     const platformObjectId = platformId;
     user.interestedPlatforms.push(platformObjectId);
-    await user.save({ validateBeforeSave: false });
-    return res.status(200).json({ message: "Interested", success: true });
+    await user.save({validateBeforeSave: false});
+    return res.status(200).json({message: 'Interested', success: true});
   } catch (error) {
     console.log('Error in interested in platform: ', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({error: 'Internal server error'});
   }
 };
 
 export const getUserInterestedPlatforms = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const {userId} = req.body;
 
     // Find the user by userId and populate the interestedPlatforms field
     const user = await User.findById(userId).populate('interestedPlatforms');
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({message: 'User not found'});
     }
 
     // Extract interested platforms from the user object
     const interestedPlatforms = user.interestedPlatforms;
 
-    return res.status(200).json({ interestedPlatforms });
+    return res.status(200).json({interestedPlatforms});
   } catch (error) {
     console.error('Error in getUserInterestedPlatforms:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({error: 'Internal server error'});
   }
 };
-
 
 export const percentageTimeSpentByCategory = async (req, res) => {
   try {
     const {userId} = req.body;
 
     // Find the user by ID
-    const user = await User.findById(userId).populate('enrolledPlatforms.platform');
+    const user = await User.findById(userId).populate(
+      'enrolledPlatforms.platform',
+    );
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({message: 'User not found'});
     }
 
     // Initialize an object to store the total time spent on each category
     const totalTimeByCategory = {
-      'Entertainment': 0,
-      'Music': 0,
-      'Education': 0,
-      'Dating': 0,
-      'Productivity': 0,
+      Entertainment: 0,
+      Music: 0,
+      Education: 0,
+      Dating: 0,
+      Productivity: 0,
     };
 
     // Calculate the total time spent on each category
@@ -308,33 +314,36 @@ export const percentageTimeSpentByCategory = async (req, res) => {
     });
 
     // Calculate the total time spent by the user
-    const totalTimeSpent = Object.values(totalTimeByCategory).reduce((total, time) => total + time, 0);
+    const totalTimeSpent = Object.values(totalTimeByCategory).reduce(
+      (total, time) => total + time,
+      0,
+    );
 
     // Calculate the percentage of time spent on each category
     const percentageByCategory = {};
     for (const category in totalTimeByCategory) {
-      percentageByCategory[category] = (totalTimeByCategory[category] / totalTimeSpent) * 100;
+      percentageByCategory[category] =
+        (totalTimeByCategory[category] / totalTimeSpent) * 100;
     }
 
     // Return the result
-    res.json({ percentageByCategory });
+    res.json({percentageByCategory});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({message: 'Internal server error'});
   }
-}
-
+};
 
 export const getTopPlatformsByTime = async (req, res) => {
   try {
     // Extract userId from request parameters
-    const { userId } = req.params;
+    const {userId} = req.params;
 
     // Find the user by userId
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({message: 'User not found'});
     }
 
     // Get the enrolledPlatforms array for the user
@@ -350,18 +359,18 @@ export const getTopPlatformsByTime = async (req, res) => {
     const platformIds = topPlatforms.map(platform => platform.platform);
 
     // Find the platform documents corresponding to the platformIds
-    const platforms = await Platform.find({ _id: { $in: platformIds } });
+    const platforms = await Platform.find({_id: {$in: platformIds}});
 
     // Extract relevant information (e.g., name, logoImage) from the platform documents
     const topPlatformsInfo = platforms.map(platform => ({
       name: platform.name,
-      logoImage: platform.logoImage
+      logoImage: platform.logoImage,
     }));
 
     // Send the top 5 platforms info as the response
-    res.status(200).json({ topPlatforms: topPlatformsInfo });
+    res.status(200).json({topPlatforms: topPlatformsInfo});
   } catch (error) {
     console.error('Error finding top platforms:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({message: 'Internal server error'});
   }
 };

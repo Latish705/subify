@@ -1,29 +1,29 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
-import { User } from '../../server/src/models/userModel';
+import {User} from '../../server/src/models/userModel';
 
 const LoginForm = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  
   const handleLogin = async () => {
     try {
-      console.log("clicked");
+      console.log('clicked');
 
-      console.log("email: ", email, "  Password: ", password)
+      console.log('email: ', email, '  Password: ', password);
 
       const response = await axios.post(
-        'http://192.168.211.76:8090/api/users/login',
-        { email: email, password: password }
+        'http://172.16.30.20:8090/api/users/login',
+        {email: email, password: password},
       );
 
-      console.log(response.data.user._id)
+      console.log(response.data.user._id);
 
-      if (response.data.success) navigation.navigate('Insight', { userId: response.data.user._id })
+      if (response.data.success)
+        navigation.navigate('Insight', {userId: response.data.user._id});
     } catch (error) {
-      console.log("error sending receiveing the request", error);  
+      console.log('error sending receiveing the request', error);
     }
   };
 

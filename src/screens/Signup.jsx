@@ -22,7 +22,7 @@ const SignupForm = ({route, navigation}) => {
       //navigation.navigate('Home');
       //navigation.navigate('Dasboard', {username: 'example user'});
       const response = await axios.post(
-        'http://172.16.30.27:8090/api/users/register',
+        'http://172.16.30.20:8090/api/users/register',
         {username, email, password},
       );
       console.log(response);
