@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+const ip = ['172.16.30.20', '172.16.30.27'];
 
 export default function Insight({navigation, route}) {
   const {userId} = route.params;
@@ -26,7 +27,7 @@ export default function Insight({navigation, route}) {
     const fetchPercentage = async () => {
       try {
         const response = await axios.post(
-          'http://172.16.30.20:8090/api/users/percentageRoutebyCategory',
+          `http://${ip[0]}:8090/api/users/percentageRoutebyCategory`,
           {userId},
         );
         const data = response.data.percentageByCategory;
@@ -40,7 +41,7 @@ export default function Insight({navigation, route}) {
     const fetchTopPlatforms = async () => {
       try {
         const response = await axios.post(
-          'http://172.16.30.20:8090/api/users/topPlatformsByTime',
+          `http://${ip[0]}:8090/api/users/topPlatformsByTime`,
           {userId},
         );
         setTopPlatforms(response.data.topPlatforms);

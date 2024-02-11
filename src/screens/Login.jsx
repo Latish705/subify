@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
-
+const ip = ['172.16.30.20', '172.16.30.27'];
 const LoginForm = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,8 +13,11 @@ const LoginForm = ({navigation}) => {
       console.log('email: ', email, '  Password: ', password);
 
       const response = await axios.post(
-        'http://172.16.30.20:8090/api/users/login',
-        {email: email, password: password},
+        `http://${ip[0]}:8090/api/users/login`,
+        {
+          email: email,
+          password: password,
+        },
       );
 
       console.log(response.data.user._id);

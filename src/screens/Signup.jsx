@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+const ip = ['172.16.30.20:8090', '172.16.30.27'];
 
 const SignupForm = ({route, navigation}) => {
   console.log('route: ', route);
@@ -22,7 +23,7 @@ const SignupForm = ({route, navigation}) => {
       //navigation.navigate('Home');
       //navigation.navigate('Dasboard', {username: 'example user'});
       const response = await axios.post(
-        'http://172.16.30.20:8090/api/users/register',
+        `http://${ip[0]}:8090/api/users/register`,
         {username, email, password},
       );
       console.log(response);
