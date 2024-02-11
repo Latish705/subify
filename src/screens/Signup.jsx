@@ -23,11 +23,11 @@ const SignupForm = ({route, navigation}) => {
       //navigation.navigate('Home');
       //navigation.navigate('Dasboard', {username: 'example user'});
       const response = await axios.post(
-        `http://${ip[0]}:8090/api/users/register`,
+        `http://${ip[1]}:8090/api/users/register`,
         {username, email, password},
       );
       console.log(response);
-      navigation.navigate('Insight');
+      navigation.navigate('Insight', { userId: response.data.user._id });
     } catch (error) {
       console.log('error sending the request', error);
     }

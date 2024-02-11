@@ -355,7 +355,7 @@ export const getTopPlatformsByTime = async (req, res) => {
     enrolledPlatforms.sort((a, b) => b.timeSpent - a.timeSpent);
 
     // Get the top 5 platforms
-    const topPlatforms = enrolledPlatforms.slice(0, 5);
+    const topPlatforms = enrolledPlatforms.slice(0, 3);
 
     // Extract platform IDs from the topPlatforms array
     const platformIds = topPlatforms.map(platform => platform.platform);

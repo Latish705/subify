@@ -27,7 +27,7 @@ export default function Insight({navigation, route}) {
     const fetchPercentage = async () => {
       try {
         const response = await axios.post(
-          `http://${ip[0]}:8090/api/users/percentageRoutebyCategory`,
+          `http://${ip[1]}:8090/api/users/percentageRoutebyCategory`,
           {userId},
         );
         const data = response.data.percentageByCategory;
@@ -41,7 +41,7 @@ export default function Insight({navigation, route}) {
     const fetchTopPlatforms = async () => {
       try {
         const response = await axios.post(
-          `http://${ip[0]}:8090/api/users/topPlatformsByTime`,
+          `http://${ip[1]}:8090/api/users/topPlatformsByTime`,
           {userId},
         );
         setTopPlatforms(response.data.topPlatforms);
@@ -57,7 +57,7 @@ export default function Insight({navigation, route}) {
 
   const handleCommunity = () => {
     // Navigate to the Community screen
-    navigation.navigate('Community');
+    navigation.navigate('Community', { userId: userId });
   };
 
   return (

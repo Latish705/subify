@@ -21,7 +21,7 @@ export default function Forum() {
     const handleGetAllPost = async () => {
       try {
         const response = await axios.get(
-          'http://172.16.30.20:8090/api/posts/getAllPosts',
+          'http://172.16.30.27:8090/api/posts/getAllPosts',
         );
         setContent(response.data.posts); // Set contents as array of posts
       } catch (error) {
