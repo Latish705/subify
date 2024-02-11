@@ -7,16 +7,22 @@ export default function Community() {
   const [showForum, setShowForum] = React.useState(true);
   const [showPair, setShowPair] = React.useState(false);
 
-  const toggleState = () => {
-    setShowForum(prev => !prev);
-    setShowPair(prev => !prev);
+  const forumClick = () => {
+    setShowForum(true);
+    setShowPair(false)
     return;
   };
 
+  const pairClck = () => {
+    setShowForum(false);
+    setShowPair(true);
+    return
+  }
+
   return (
     <ScrollView style={{height: 'auto'}}>
-      <Button title="Forum" onPress={toggleState} color="black" />
-      <Button title="Pair" onPress={toggleState} color="black" />
+      <Button title="Forum" onPress={forumClick} color="black" />
+      <Button title="Pair" onPress={pairClck} color="black" />
       {showForum && (
         <View style={{overflow: 'scroll'}}>
           <Forum />
