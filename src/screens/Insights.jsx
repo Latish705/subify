@@ -26,10 +26,11 @@ export default function Insight({navigation, route}) {
     const fetchPercentage = async () => {
       try {
         const response = await axios.post(
-          'http://192.168.211.76:8090/api/users/percentageRoutebyCategory',
+          'http://172.16.30.20:8090/api/users/percentageRoutebyCategory',
           {userId},
         );
         const data = response.data.percentageByCategory;
+        console.log(data);
         setPercentage(data);
       } catch (error) {
         console.log('Error fetching percentage:', error);
@@ -39,10 +40,11 @@ export default function Insight({navigation, route}) {
     const fetchTopPlatforms = async () => {
       try {
         const response = await axios.post(
-          'http://192.168.211.76:8090/api/users/topPlatformsByTime',
+          'http://172.16.30.20:8090/api/users/topPlatformsByTime',
           {userId},
         );
         setTopPlatforms(response.data.topPlatforms);
+        console.log(topPlatforms);
       } catch (error) {
         console.log('Error fetching top platforms:', error);
       }
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 30,
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 20,
@@ -175,6 +178,7 @@ const styles = StyleSheet.create({
   },
   trend: {
     fontSize: 20,
+    color: 'black',
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',

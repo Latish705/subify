@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 import {View, TextInput, Button, StyleSheet} from 'react-native';
-import {User} from '../../server/src/models/userModel';
 
 const LoginForm = ({navigation}) => {
   const [email, setEmail] = useState('');

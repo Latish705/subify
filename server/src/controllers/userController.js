@@ -338,8 +338,8 @@ export const getTopPlatformsByTime = async (req, res) => {
   try {
     // Extract userId from request parameters
 
-    const {userId} = req.params;
-    // const {userId} = req.body;
+    // const {userId} = req.params;
+    const {userId} = req.body;
 
     // Find the user by userId
     const user = await User.findById(userId);
