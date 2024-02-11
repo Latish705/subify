@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
       platform: {type: Schema.Types.ObjectId, ref: 'Platform'},
     },
   ],
+  platformInterested: [{type: String, required: false}],
 });
 
 userSchema.pre('save', async function (next) {

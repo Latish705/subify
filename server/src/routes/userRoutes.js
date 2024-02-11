@@ -8,7 +8,8 @@ import {
   addinterestedPlatforms,
   getUserInterestedPlatforms,
   percentageTimeSpentByCategory,
-  getTopPlatformsByTime
+  getTopPlatformsByTime,
+  FindSameCategoryUsers,
 } from '../controllers/userController.js';
 
 const userRouter = Router();
@@ -23,6 +24,7 @@ userRouter.post('/addPlatformTimeSpent', addPlatformTime);
 userRouter.post('/enrollePlatform', enrolledPlatforms);
 userRouter.post('/addIntrestedplatform', addinterestedPlatforms);
 userRouter.get('/userIntrestedplatform', getUserInterestedPlatforms);
-userRouter.post('/percentageRoutebyCategory',percentageTimeSpentByCategory);
-userRouter.post('/topPlatformsByTime',getTopPlatformsByTime);
+userRouter.post('/percentageRoutebyCategory', percentageTimeSpentByCategory);
+userRouter.post('/topPlatformsByTime', getTopPlatformsByTime);
+userRouter.get('/findUserPlatform', FindSameCategoryUsers);
 export default userRouter;

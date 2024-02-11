@@ -1,4 +1,5 @@
 import {Platform} from '../models/platformModel.js';
+import {User} from '../models/userModel.js';
 export const addPlatform = async (req, res) => {
   try {
     const {category, name, plans, logo} = req.body;
@@ -25,5 +26,22 @@ export const addPlatform = async (req, res) => {
     });
   } catch (error) {
     console.log('Error creating platform: ', error);
+  }
+};
+
+export const addPlatfromInterest = async (req, res) => {
+  try {
+    const {userId, platform} = req.body;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({message: 'User not found'});
+    }
+    user.platformInterested.push(platform);
+    await user.save({validateBeforeSave: false});
+    return res
+      .status(201)
+      .json({message: 'Platform added to interested', user});
+  } catch (error) {
+    console.log('Error adding platform to interested: ', error);
   }
 };
