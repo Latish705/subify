@@ -14,10 +14,29 @@ const ContentCard = ({content}) => {
   );
 };
 
+const InputForm = () => {
+
+  const [content, setContent] = React.useState('')
+
+  return (
+    <View>
+      <InputText
+        placeHolder="Your opinion here..."
+        style={{ borderBottomWidth : 1, borderBottomColor: 'black' }}
+        value={content}
+        onChangeText={setContent}
+      />
+    </View>
+  )
+}
+
 export default function Forum() {
   const [contents, setContent] = React.useState([]); // Initialize as an array
+  const [showInput, setShowInput] = React.useState('');
 
   React.useEffect(() => {
+
+    
     const handleGetAllPost = async () => {
       try {
         const response = await axios.get(
@@ -44,6 +63,10 @@ export default function Forum() {
           ADD
         </Text>
       </View>
+
+      { showInput &&
+        <InputForm/>
+      }
     </ScrollView>
   );
 }
