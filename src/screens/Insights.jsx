@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView, Image } from 'react-native';
 
 
 
@@ -14,6 +14,8 @@ export default function Insight({ navigation, route }) {
         Music: "",
         Productivity: "",
     })
+
+    const [topPlatforms, setTopPlatforms] = React.useState([]);
 
     React.useEffect(() => {
         const handlePercentage = async () => {
@@ -36,7 +38,19 @@ export default function Insight({ navigation, route }) {
             }
         }
 
+        const handleTopPlatform = async () => {
+            try {
+                const response = await axios.post('http://192.168.211.76:8090/api/users/topPlatformsByTime', { userId });
+                const data = response.data.topPlatforms
+                setTopPlatforms(data);
+                return;
+            } catch (error) {
+                return console.log("Some error occured ", error)
+            }
+        }
+
         handlePercentage();
+        handleTopPlatform();
     }, [])
   
 
@@ -102,10 +116,15 @@ export default function Insight({ navigation, route }) {
                     Apps that you used Most
                 </Text>
                 <View>
-                    <View></View>
-                    <View></View>
-                    <View></View>
-                    <View></View>
+                    {topPlatforms.map((platform) => {
+                        return (
+                            <Image source={{
+                                width: 100,
+                                height: 200,
+                                uri: platform.logoImage
+                            }} />
+                        )
+                    })}
                 </View>
 
                 <Text style={styles.trend}>
