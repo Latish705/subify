@@ -26,5 +26,6 @@ userRouter.post('/addIntrestedplatform', addinterestedPlatforms);
 userRouter.get('/userIntrestedplatform', getUserInterestedPlatforms);
 userRouter.post('/percentageRoutebyCategory', percentageTimeSpentByCategory);
 userRouter.post('/topPlatformsByTime', getTopPlatformsByTime);
-userRouter.get('/findUserPlatform', FindSameCategoryUsers);
+
+userRouter.post('/findUserPlatform', FindSameCategoryUsers);
 export default userRouter;

@@ -379,10 +379,11 @@ export const getTopPlatformsByTime = async (req, res) => {
 
 export const FindSameCategoryUsers = async (req, res) => {
   try {
-    const {userId} = req.body;
+    const {userId, platform} = req.body;
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({message: 'User not found'});
+      return res.status(405).json({message: 'User not found'});
     }
     const platformInterested = user.platformInterested;
     const users = await User.find({

@@ -7,6 +7,6 @@ import {
 const platformRouter = Router();
 
 platformRouter.post('/addPlatform', addPlatform);
-platformRouter.get('/addPlatformInterest', addPlatfromInterest);
+platformRouter.post('/addPlatformInterest', addPlatfromInterest);
 
 export default platformRouter;
